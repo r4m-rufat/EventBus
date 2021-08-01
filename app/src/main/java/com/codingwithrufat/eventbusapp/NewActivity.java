@@ -25,8 +25,11 @@ public class NewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 NotificationEvent notificationEvent = new NotificationEvent();
-                notificationEvent.setNotification_message(editText.getText().toString().trim());
-                EventBus.getDefault().post(notificationEvent);
+                String value = editText.getText().toString().trim();
+                if (!value.isEmpty()){
+                    notificationEvent.setNotification_message(value);
+                    EventBus.getDefault().postSticky(notificationEvent);
+                }
                 finish();
             }
         });

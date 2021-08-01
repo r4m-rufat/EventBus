@@ -14,12 +14,13 @@ import com.codingwithrufat.eventbusapp.model.NotificationEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private TextView textView;
-    private Button button;
+    private Button button, passSticky;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.text_value);
         button = findViewById(R.id.passButton);
+        passSticky = findViewById(R.id.passSticky);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NewActivity.class));
             }
         });
+
+        passSticky.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CheckStickyActivity.class));
+            }
+        });
+
 
     }
 
@@ -52,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
+    @Subscribe()
     public void onEvent(NotificationEvent value){
         textView.setText(value.getNotification_message());
         Log.d(TAG, "onEvent: Value is" + value.getNotification_message());
+        EventBus.getDefault().cancelEventDelivery(value);
     }
 
 }
